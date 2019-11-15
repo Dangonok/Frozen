@@ -21,19 +21,21 @@ public class CreatePoints : MonoBehaviour
     [SerializeField] float m_distanceFromLastPoint;
     [SerializeField] Transform m_parentHand;
 
+    [SerializeField] GameObject m_lastPathGoTemp;
+
     private void Start()
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
-        pathFollower.speed = gameDatas.playerSpeed;
+       // pathFollower.speed = gameDatas.playerSpeed;
     }
 
     void Update()
     {
-        m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
+       // m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
         if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any))
         {
             //m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPositionRay(m_handTransform, m_playerTransform));
-            m_pathCreator.bezierPath.AddSegmentToEnd(m_target.position);
+            m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
           //  SetLastPointRotation(m_handTransform);
         }
         //m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
@@ -42,18 +44,24 @@ public class CreatePoints : MonoBehaviour
 
     private Vector3 GetInstanceDotPosition(Transform handTransform, Transform playerTransform, Transform handParent)
     {
+
+        GameObject lastPathGo = m_pathHolder.transform.GetChild(m_pathHolder.transform.childCount - 1).gameObject;
+        m_lastPathGoTemp.transform.parent = lastPathGo.transform;
+        m_lastPathGoTemp.transform.localPosition = Vector3.zero;
+        m_lastPathGoTemp.transform.localRotation = handTransform.localRotation;
+        //Quaternion handlocalRot = handTransform.localRotation;
+        //m_lastPathGoTemp.transform.forward = newForward;
+        //DEMARS S EN OCCUPE
+
+        //sortir le game object tempon
+        if (m_lastPathGoTemp.transform.parent != null)
+            m_lastPathGoTemp.transform.parent = null;
         Vector3 finalDotPosition = m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1);
-        Vector3 finalDotRotation = m_pathHolder.transform.GetChild(m_pathHolder.transform.childCount - 1).localRotation * Vector3.forward;
-        //Vector3 finalDotRotation = m_pathCreator.bezierPath.GetAnchorNormalAngle(m_pathCreator.bezierPath.NumPoints - 1);
-        //Vector3 focusRay = handTransform.forward * m_distanceFocus + finalDotPosition;
-        //Vector3 localForward = m_parentHand.InverseTransformDirection(handTransform.forward);
-        Vector3 localForward = handTransform.localRotation * Vector3.forward;
-        Vector3 adaptatifForward = (handTransform.localRotation * m_pathHolder.transform.GetChild(m_pathHolder.transform.childCount - 1).rotation) * Vector3.forward;
-        Debug.Log("fwd cumulé: " + (localForward + finalDotRotation) + " / local fwd: " + localForward + " / fwd finaldot : " + finalDotRotation);
-        Vector3 newDotPosition = finalDotPosition + ((localForward) * m_distanceFromLastPoint);
+
+        Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * m_distanceFromLastPoint + finalDotPosition;
+        print(newDotPosition);
         return newDotPosition;
     }
-
 
     /// <summary>
     /// Permet de viser la direction dans laquel la piste va continuer sa trajectoire.
