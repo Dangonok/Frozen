@@ -22,25 +22,32 @@ public class CreatePoints : MonoBehaviour
     [SerializeField] Transform m_parentHand;
 
     [SerializeField] GameObject m_lastPathGoTemp;
-
+    [SerializeField] LineRenderer m_line;
     private void Start()
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
-       // pathFollower.speed = gameDatas.playerSpeed;
+        pathFollower.speed = gameDatas.playerSpeed;
     }
 
     void Update()
     {
-       // m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
         if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any))
         {
-            //m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPositionRay(m_handTransform, m_playerTransform));
             m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
-          //  SetLastPointRotation(m_handTransform);
+          //  m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPositionRay(m_handTransform, m_playerTransform));
+            // SetLastPointRotation(m_handTransform);
         }
-        //m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
+      //  m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
+        m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
+
+        SetLine();
     }
 
+    private void SetLine()
+    {
+        m_line.SetPosition(0, m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1));
+        m_line.SetPosition(1, m_target.position);
+    }
 
     private Vector3 GetInstanceDotPosition(Transform handTransform, Transform playerTransform, Transform handParent)
     {
