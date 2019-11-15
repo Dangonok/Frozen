@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
 using Valve.VR;
+using PathCreation.Examples;
 
 public class CreatePoints : MonoBehaviour
 {
-    public SteamVR_Action_Boolean triggerAction;
+    public GameDatas gameDatas;
 
+    public SteamVR_Action_Boolean triggerAction;
+    [SerializeField] PathFollower pathFollower;
     [SerializeField] PathCreator m_pathCreator;
     [SerializeField] GameObject m_pathHolder;
     [SerializeField] Transform m_handTransform;
@@ -17,20 +20,12 @@ public class CreatePoints : MonoBehaviour
     [SerializeField] float m_distanceFocus;
     [SerializeField] float m_distanceFromLastPoint;
     [SerializeField] Transform m_parentHand;
-    [SerializeField] GameObject m_initAsset_00;
-    [SerializeField] GameObject m_initAsset_01;
-    [SerializeField] GameObject m_initAsset_02;
 
     private void Start()
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
+        pathFollower.speed = gameDatas.playerSpeed;
     }
-
-    private void GenerateReferencial()
-    {
-       //  Vector3 positionInit = Mathf.
-    }
-
 
     void Update()
     {
