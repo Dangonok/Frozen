@@ -27,6 +27,7 @@ public class CreatePoints : MonoBehaviour
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
         pathFollower.speed = gameDatas.playerSpeed;
+        m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
     }
 
     void Update()
@@ -39,8 +40,19 @@ public class CreatePoints : MonoBehaviour
         }
       //  m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
         m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
-
+        MoveLastSegment();
         SetLine();
+    }
+
+
+    public void MoveLastSegment()
+    {
+        print("0");
+        m_pathCreator.bezierPath.DeleteSegment(m_pathCreator.bezierPath.NumPoints-1);
+        print("0.5");
+        m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
+        print("1");
+
     }
 
     private void SetLine()
@@ -56,9 +68,7 @@ public class CreatePoints : MonoBehaviour
         m_lastPathGoTemp.transform.parent = lastPathGo.transform;
         m_lastPathGoTemp.transform.localPosition = Vector3.zero;
         m_lastPathGoTemp.transform.localRotation = handTransform.localRotation;
-        //Quaternion handlocalRot = handTransform.localRotation;
-        //m_lastPathGoTemp.transform.forward = newForward;
-        //DEMARS S EN OCCUPE
+
 
         //sortir le game object tempon
         if (m_lastPathGoTemp.transform.parent != null)
