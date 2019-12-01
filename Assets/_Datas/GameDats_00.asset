@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameDats_00
   m_EditorClassIdentifier: 
   playerSpeed: 10
+  previsualisation: 1

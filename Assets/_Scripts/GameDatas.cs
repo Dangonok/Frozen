@@ -6,4 +6,7 @@ using UnityEngine;
 public class GameDatas : ScriptableObject
 {
     public float playerSpeed;
+
+
+    public bool previsualisation;
 }

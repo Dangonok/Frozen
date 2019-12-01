@@ -12,8 +12,9 @@ namespace PathCreation.Examples {
 
         const float minSpacing = .1f;
 
-        void Generate () {
+        public void Generate () {
             if (pathCreator != null && prefab != null && holder != null) {
+                print("Generate!");
                 DestroyObjects ();
 
                 VertexPath path = pathCreator.path;

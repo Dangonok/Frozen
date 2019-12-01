@@ -11,7 +11,16 @@ public class CreatePoints : MonoBehaviour
 
     public SteamVR_Action_Boolean triggerAction;
     [SerializeField] PathFollower pathFollower;
+
+
     [SerializeField] PathCreator m_pathCreator;
+    [SerializeField] PathCreator pathPrevisu;
+
+    [SerializeField] PathPlacer m_pathplacer;
+    [SerializeField] PathPlacer pathPlacerPrevisu;
+
+
+
     [SerializeField] GameObject m_pathHolder;
     [SerializeField] Transform m_handTransform;
     [SerializeField] Transform m_playerTransform;
@@ -27,21 +36,44 @@ public class CreatePoints : MonoBehaviour
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
         pathFollower.speed = gameDatas.playerSpeed;
+        if (gameDatas.previsualisation == false)
+            pathPrevisu.gameObject.SetActive(false);
+
+        m_pathCreator.TriggerPathUpdate();
+        m_pathplacer.Generate();
     }
 
     void Update()
     {
+        m_pathplacer.Generate();
+
         if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any))
         {
             m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
+            m_pathCreator.bezierPath.NotifyPathModified();
+            
           //  m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPositionRay(m_handTransform, m_playerTransform));
             // SetLastPointRotation(m_handTransform);
         }
       //  m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
         m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
 
+        /*if (gameDatas.previsualisation == true)
+        {
+            PrevisualisationOfTheNextPoint(m_pathHolder.transform.GetChild(m_pathHolder.transform.childCount - 1).gameObject.transform.position, m_target.position);
+        }*/
+
         SetLine();
     }
+
+    void PrevisualisationOfTheNextPoint(Vector3 basePosition, Vector3 targetPosition)
+    {
+        pathPrevisu.bezierPath.MovePoint(0, basePosition, false);
+        pathPrevisu.bezierPath.MovePoint(1, targetPosition, false);
+        //pathPrevisu.TriggerPathUpdate();
+    }
+
+
 
     private void SetLine()
     {
@@ -58,7 +90,7 @@ public class CreatePoints : MonoBehaviour
         m_lastPathGoTemp.transform.localRotation = handTransform.localRotation;
         //Quaternion handlocalRot = handTransform.localRotation;
         //m_lastPathGoTemp.transform.forward = newForward;
-        //DEMARS S EN OCCUPE
+        //DEMARS S'EN OCCUPE
 
         //sortir le game object tempon
         if (m_lastPathGoTemp.transform.parent != null)
