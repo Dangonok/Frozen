@@ -34,6 +34,7 @@ public class CreatePoints : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any))
         {
+            m_pathCreator.bezierPath.SetAnchorNormalAngle(m_pathCreator.bezierPath.NumSegments, m_handTransform.localEulerAngles.z);
             m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
           //  m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPositionRay(m_handTransform, m_playerTransform));
             // SetLastPointRotation(m_handTransform);
@@ -47,12 +48,9 @@ public class CreatePoints : MonoBehaviour
 
     public void MoveLastSegment()
     {
-        print("0");
         m_pathCreator.bezierPath.DeleteSegment(m_pathCreator.bezierPath.NumPoints-1);
-        print("0.5");
         m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
-        print("1");
-
+        m_pathCreator.bezierPath.SetAnchorNormalAngle(m_pathCreator.bezierPath.NumSegments, m_handTransform.localEulerAngles.z);
     }
 
     private void SetLine()
@@ -76,7 +74,7 @@ public class CreatePoints : MonoBehaviour
         Vector3 finalDotPosition = m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1);
 
         Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * m_distanceFromLastPoint + finalDotPosition;
-        print(newDotPosition);
+        //print(newDotPosition);
         return newDotPosition;
     }
 
