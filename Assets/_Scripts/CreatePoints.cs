@@ -7,8 +7,6 @@ using PathCreation.Examples;
 
 public class CreatePoints : MonoBehaviour
 {
-    public GameDatas gameDatas;
-
     public SteamVR_Action_Boolean triggerAction;
     [SerializeField] PathFollower pathFollower;
     [SerializeField] PathCreator m_pathCreator;
@@ -18,15 +16,14 @@ public class CreatePoints : MonoBehaviour
     [SerializeField] Transform m_target;
 
     [SerializeField] float m_distanceFocus;
-    [SerializeField] float m_distanceFromLastPoint;
     [SerializeField] Transform m_parentHand;
-
+    
     [SerializeField] GameObject m_lastPathGoTemp;
     [SerializeField] LineRenderer m_line;
     private void Start()
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;
-        pathFollower.speed = gameDatas.playerSpeed;
+        pathFollower.speed = GameManager.Instance.datas.playerSpeed;
         m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
     }
 
@@ -41,7 +38,9 @@ public class CreatePoints : MonoBehaviour
         }
       //  m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
         m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
-        MoveLastSegment();
+
+        if (GameManager.Instance.datas.previsualisation == true)
+            MoveLastSegment();
         SetLine();
     }
 
@@ -73,7 +72,7 @@ public class CreatePoints : MonoBehaviour
             m_lastPathGoTemp.transform.parent = null;
         Vector3 finalDotPosition = m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1);
 
-        Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * m_distanceFromLastPoint + finalDotPosition;
+        Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * GameManager.Instance.datas.distanceInit + finalDotPosition;
         //print(newDotPosition);
         return newDotPosition;
     }
@@ -89,7 +88,7 @@ public class CreatePoints : MonoBehaviour
         Vector3 finalDotPosition = m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1);
         Vector3 focusRay = handTransform.forward * m_distanceFocus + playerTransform.position;
         Vector3 pointToRayDirection = (focusRay - finalDotPosition).normalized;
-        Vector3 newDotPosition = finalDotPosition + pointToRayDirection * m_distanceFromLastPoint;
+        Vector3 newDotPosition = finalDotPosition + pointToRayDirection * GameManager.Instance.datas.distanceInit;
         return newDotPosition;
     }
 

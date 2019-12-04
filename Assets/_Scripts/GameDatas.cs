@@ -6,4 +6,9 @@ using UnityEngine;
 public class GameDatas : ScriptableObject
 {
     public float playerSpeed;
+    public bool previsualisation;
+    public int spheresMinRadius;
+    public int spheresMaxRadius;
+    public int distanceInit;
+    public GameObject[] objects;
 }

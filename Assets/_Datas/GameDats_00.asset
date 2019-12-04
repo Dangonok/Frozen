@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: GameDats_00
   m_EditorClassIdentifier: 
   playerSpeed: 10
+  previsualisation: 0
+  spheresMinRadius: 20
+  spheresMaxRadius: 20
+  distanceInit: 30

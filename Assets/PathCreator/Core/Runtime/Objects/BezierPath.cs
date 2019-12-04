@@ -655,7 +655,7 @@ namespace PathCreation {
             }
 
             if (OnModified != null) {
-                OnModified ();
+                OnModified();
             }
         }
 

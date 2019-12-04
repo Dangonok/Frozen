@@ -22,15 +22,19 @@ namespace PathCreation.Examples {
         MeshRenderer meshRenderer;
         Mesh mesh;
 
-        protected override void PathUpdated () {
-            if (pathCreator != null) {
+        protected override void PathUpdated ()
+        {
+            if (pathCreator != null)
+            {
                 AssignMeshComponents ();
                 AssignMaterials ();
                 CreateRoadMesh ();
+                meshHolder.transform.eulerAngles = new Vector3(-90, 0, 0);
             }
         }
 
-        void CreateRoadMesh () {
+        void CreateRoadMesh ()
+        {
             Vector3[] verts = new Vector3[path.NumPoints * 8];
             Vector2[] uvs = new Vector2[verts.Length];
             Vector3[] normals = new Vector3[verts.Length];
