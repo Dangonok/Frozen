@@ -7,6 +7,7 @@ public class Avatar : MonoBehaviour
 {
     [SerializeField] SteamVR_Action_Boolean triggerAction;
     private List<Shape> m_bubblesInRange = new List<Shape>();
+
     // Start is called before the first frame update
     void Start()
     {
