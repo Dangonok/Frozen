@@ -44,6 +44,8 @@ public class PositionCurve : MonoBehaviour
 
     bool waitForTheEndOfPreinitialising = false;
 
+    public List<Vector3> positions = new List<Vector3>();
+
 
 
 
@@ -75,7 +77,20 @@ public class PositionCurve : MonoBehaviour
     {
         DestroyTheEndOfThePathFrom(1);
         DestroyTheEndOfTheRoadFrom(1);
+        DestroyTheEndOfThePositionFrom(1);
         InstantiateNewPoints();
+    }
+
+
+    public void DestroyTheEndOfThePositionFrom (int HowManySegment)
+    {
+        for (int i =0; i< HowManySegment; i++)
+        {
+            for (int j =0; j < smoothness; j++)
+            {
+                positions.Remove(positions[positions.Count - 1]);
+            }
+        }
     }
 
     public void DestroyTheEndOfTheRoadFrom (int HowManySegment)
@@ -244,6 +259,7 @@ public class PositionCurve : MonoBehaviour
                     }
                     bufferRoad = roadJustCreated;
                 }
+                positions.Add(roadJustCreated.transform.position);
             }
                 
         }
