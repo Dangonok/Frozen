@@ -152,11 +152,12 @@ MonoBehaviour:
   rotationOfTheLastRoadPart: 0
   curveHolder: {fileID: 430568668}
   anchor: {fileID: 381363592313832985, guid: 9c3357b41505be14f901ca434afae492, type: 3}
-  physicalRoad: {fileID: 3858008267525303465, guid: b0cab197dfce6d74880fb05f05ebf696,
+  physicalRoad: {fileID: 4017391846228925514, guid: f31e50d67190bc34589e8f9c3fea476a,
     type: 3}
   roadHolder: {fileID: 2113862753}
   Instanciator: {fileID: 810111005}
   posOfTheNewPoints: {x: 0, y: 0, z: 0}
+  positions: []
   curveTab: []
 --- !u!4 &430568670
 Transform:
@@ -201,7 +202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c3ae3e7862efa4286d89aeb966dd84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handTransform: {fileID: 0}
   positionHolder: {fileID: 430568669}
+  triggerAction:
+    actionPath: /actions/default/in/SnapTurnLeft
+    needsReinit: 0
 --- !u!4 &810111007
 Transform:
   m_ObjectHideFlags: 0

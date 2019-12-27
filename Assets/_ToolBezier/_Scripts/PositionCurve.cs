@@ -58,19 +58,19 @@ public class PositionCurve : MonoBehaviour
         if (preInstantiate == true)
             InitialisationOfThePath();
 
-        if (previsualisation == true)
+       /* if (previsualisation == true)
         {
             InstantiateNewPoints();
-        }
+        }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (previsualisation == true)
+        /*if (previsualisation == true)
         {
             PathPrevisualisation();
-        }
+        }*/
     }
 
     public void PathPrevisualisation()
@@ -80,6 +80,15 @@ public class PositionCurve : MonoBehaviour
         DestroyTheEndOfThePositionFrom(1);
         InstantiateNewPoints();
     }
+
+    public void PathPrevisualisation(Vector3 newPos)
+    {
+        DestroyTheEndOfThePathFrom(1);
+        DestroyTheEndOfTheRoadFrom(1);
+        DestroyTheEndOfThePositionFrom(1);
+        InstantiateNewPoints(newPos);
+    }
+
 
 
     public void DestroyTheEndOfThePositionFrom (int HowManySegment)
@@ -250,9 +259,9 @@ public class PositionCurve : MonoBehaviour
                 }
                 else
                 {
-                    bufferRoad.transform.LookAt(roadJustCreated.transform);
-                    bufferRoad.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y, (i / smoothness) * rotationValue + rotationOfTheLastRoadPart);
-                    if (i == smoothness - 1)
+                   bufferRoad.transform.rotation = Quaternion.LookRotation(bufferRoad.transform.position - roadJustCreated.transform.position);
+                   bufferRoad.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y, (i / smoothness) * rotationValue + rotationOfTheLastRoadPart);
+                   if (i == smoothness - 1)
                     {
                         roadJustCreated.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y,
                                                                   bufferRoad.transform.rotation.eulerAngles.z + (1/smoothness) * rotationOfTheLastRoadPart);
