@@ -3664,7 +3664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &592813558
 Transform:
   m_ObjectHideFlags: 0
@@ -5511,7 +5511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preInstantiate: 1
-  howManySegment: 3
+  howManySegment: 4
   smoothness: 20
   progressifInstantiateRoad: 0
   speedOfDraw: 0
@@ -5519,6 +5519,7 @@ MonoBehaviour:
   previsualisation: 1
   rotationValue: 0
   rotationOfTheLastRoadPart: 0
+  handTransform: {fileID: 1876108830}
   curveHolder: {fileID: 455353856}
   anchor: {fileID: 381363592313832985, guid: 9c3357b41505be14f901ca434afae492, type: 3}
   physicalRoad: {fileID: 4017391846228925514, guid: f31e50d67190bc34589e8f9c3fea476a,
@@ -8564,6 +8565,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &1408282481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1408282482}
+  m_Layer: 0
+  m_Name: New New Path Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1408282482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408282481}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.351696, y: 3.4154263, z: 33.238266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1409619196
 GameObject:
   m_ObjectHideFlags: 0

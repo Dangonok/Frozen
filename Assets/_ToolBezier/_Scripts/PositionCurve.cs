@@ -6,17 +6,17 @@ public class PositionCurve : MonoBehaviour
 {
 
     [Header("Preinstantiate The Path")]
-    [Tooltip ("True if you want a predraw (Predraw destroy the path if there is one)")]
+    [Tooltip("True if you want a predraw (Predraw destroy the path if there is one)")]
     public bool preInstantiate;
-    [Tooltip ("How many segment you want to draw at the beginning of the game")]
+    [Tooltip("How many segment you want to draw at the beginning of the game")]
     public int howManySegment;
 
     [Header("How The Path Is Draw")]
-    [Tooltip ("How Many point are produce between two anchor")]
+    [Tooltip("How Many point are produce between two anchor")]
     public float smoothness;
-    [Tooltip ("Is The Path Draw Progressivily")]
+    [Tooltip("Is The Path Draw Progressivily")]
     public bool progressifInstantiateRoad;
-    [Tooltip ("If progressifInstantiateRoad is true, how fast the road is draw")]
+    [Tooltip("If progressifInstantiateRoad is true, how fast the road is draw")]
     public float speedOfDraw;
     [Tooltip("Position Between Each Point")]
     public int distanceBetweenAnchor;
@@ -29,9 +29,9 @@ public class PositionCurve : MonoBehaviour
     public float rotationOfTheLastRoadPart;
 
 
-    [Header ("Not Tooltiped yet or other Stuff")]
+    [Header("Not Tooltiped yet or other Stuff")]
 
-
+    [SerializeField] Transform handTransform;
     public GameObject curveHolder;
     public GameObject anchor;
     public GameObject physicalRoad;
@@ -58,10 +58,10 @@ public class PositionCurve : MonoBehaviour
         if (preInstantiate == true)
             InitialisationOfThePath();
 
-       /* if (previsualisation == true)
-        {
-            InstantiateNewPoints();
-        }*/
+        /* if (previsualisation == true)
+         {
+             InstantiateNewPoints();
+         }*/
     }
 
     // Update is called once per frame
@@ -86,37 +86,37 @@ public class PositionCurve : MonoBehaviour
         DestroyTheEndOfThePathFrom(1);
         DestroyTheEndOfTheRoadFrom(1);
         DestroyTheEndOfThePositionFrom(1);
-        InstantiateNewPoints(newPos);
+        InstantiateNewPoints(newPos, true);
     }
 
 
 
-    public void DestroyTheEndOfThePositionFrom (int HowManySegment)
+    public void DestroyTheEndOfThePositionFrom(int HowManySegment)
     {
-        for (int i =0; i< HowManySegment; i++)
+        for (int i = 0; i < HowManySegment; i++)
         {
-            for (int j =0; j < smoothness; j++)
+            for (int j = 0; j < smoothness; j++)
             {
                 positions.Remove(positions[positions.Count - 1]);
             }
         }
     }
 
-    public void DestroyTheEndOfTheRoadFrom (int HowManySegment)
+    public void DestroyTheEndOfTheRoadFrom(int HowManySegment)
     {
         for (int i = 0; i < HowManySegment; i++)
         {
-            Destroy(roadHolder.transform.GetChild(roadHolder.transform.childCount-1).gameObject);
+            Destroy(roadHolder.transform.GetChild(roadHolder.transform.childCount - 1).gameObject);
         }
     }
 
-    public void DestroyTheEndOfThePathFrom (int howManySegment)
+    public void DestroyTheEndOfThePathFrom(int howManySegment)
     {
         for (int i = 0; i < howManySegment; i++)
         {
-            Destroy(curveTab[curveTab.Count-1].pointsAnchors.gameObject);
-            Destroy(curveTab[curveTab.Count-1].pointsAfterAnchors.gameObject);
-            curveTab.Remove(curveTab[curveTab.Count-1]);
+            Destroy(curveTab[curveTab.Count - 1].pointsAnchors.gameObject);
+            Destroy(curveTab[curveTab.Count - 1].pointsAfterAnchors.gameObject);
+            curveTab.Remove(curveTab[curveTab.Count - 1]);
         }
     }
 
@@ -134,9 +134,9 @@ public class PositionCurve : MonoBehaviour
         DestroyTheRoad();
         EmptyTheStructCurve();
 
-        for (int i =0; i< howManySegment; i++)
+        for (int i = 0; i < howManySegment; i++)
         {
-            InstantiateNewPoints(new Vector3 (0 + distanceBetweenAnchor * i,0,0));
+            InstantiateNewPoints(new Vector3(0 , 0, 0 + distanceBetweenAnchor * i), false);
         }
         waitForTheEndOfPreinitialising = false;
     }
@@ -165,31 +165,7 @@ public class PositionCurve : MonoBehaviour
         Vector3 posOfNextPoint;
         if (curveTab.Count == 0)
         {
-            posOfNextPoint = new Vector3(distanceBetweenAnchor * 0.5f, 0, 0);
-        }
-        else
-        {
-            posOfNextPoint = Vector3.LerpUnclamped(curveTab[curveTab.Count - 1].pointsAfterAnchors.transform.position, newPoint.transform.position, 2f);
-        }
-
-        GameObject pointAfterAnchor = Instantiate(anchor, posOfNextPoint , Quaternion.identity);
-        pointAfterAnchor.transform.parent = curveHolder.transform;
-        pointAfterAnchor.name = "Point" + curveTab.Count.ToString() + "AfterAnchor";
-
-        AddToTheCurve(newPoint, pointAfterAnchor);
-    }
-
-    public void InstantiateNewPoints(Vector3 positionOfTheAnchor)
-    {
-        print("Instanciate new point");
-        GameObject newPoint = Instantiate(anchor, positionOfTheAnchor, Quaternion.identity);
-        newPoint.name = "Point" + curveTab.Count.ToString();
-        newPoint.transform.parent = curveHolder.transform;
-
-        Vector3 posOfNextPoint;
-        if (curveTab.Count == 0)
-        {
-            posOfNextPoint = new Vector3(distanceBetweenAnchor * 0.5f, 0, 0);
+            posOfNextPoint = new Vector3(0, 0, distanceBetweenAnchor * 0.5f);
         }
         else
         {
@@ -200,11 +176,34 @@ public class PositionCurve : MonoBehaviour
         pointAfterAnchor.transform.parent = curveHolder.transform;
         pointAfterAnchor.name = "Point" + curveTab.Count.ToString() + "AfterAnchor";
 
-        AddToTheCurve(newPoint, pointAfterAnchor);
+        AddToTheCurve(newPoint, pointAfterAnchor, previsualisation);
+    }
+
+    public void InstantiateNewPoints(Vector3 positionOfTheAnchor, bool previsualisation)
+    {
+        GameObject newPoint = Instantiate(anchor, positionOfTheAnchor, Quaternion.identity);
+        newPoint.name = "Point" + curveTab.Count.ToString();
+        newPoint.transform.parent = curveHolder.transform;
+
+        Vector3 posOfNextPoint;
+        if (curveTab.Count == 0)
+        {
+            posOfNextPoint = new Vector3(0, 0, distanceBetweenAnchor * 0.5f);
+        }
+        else
+        {
+            posOfNextPoint = Vector3.LerpUnclamped(curveTab[curveTab.Count - 1].pointsAfterAnchors.transform.position, newPoint.transform.position, 2f);
+        }
+
+        GameObject pointAfterAnchor = Instantiate(anchor, posOfNextPoint, Quaternion.identity);
+        pointAfterAnchor.transform.parent = curveHolder.transform;
+        pointAfterAnchor.name = "Point" + curveTab.Count.ToString() + "AfterAnchor";
+
+        AddToTheCurve(newPoint, pointAfterAnchor, previsualisation);
     }
 
     //Permet de mettre un nouveau point dans le tableau de structure!
-    void AddToTheCurve(GameObject anchor, GameObject afterAnchor)
+    void AddToTheCurve(GameObject anchor, GameObject afterAnchor, bool previsualisation)
     {
         if (curveTab.Count > 0)
         {
@@ -228,13 +227,13 @@ public class PositionCurve : MonoBehaviour
             StartCoroutine(DrawNewSegment(speedOfDraw));
         else
         {
-            DrawNewSegment();
+            DrawNewSegment(previsualisation);
         }
     }
 
 
     //Permet de faire la curve proprement
-    Vector3 GetPoint(StructSegment CurveToDraw,StructSegment CurveBefore, float time)
+    Vector3 GetPoint(StructSegment CurveToDraw, StructSegment CurveBefore, float time)
     {
         Vector3 pos = Vector3.Lerp(Vector3.Lerp(CurveBefore.pointsAnchors.transform.position, CurveToDraw.pointsBeforeAnchors.transform.position, time),
                             Vector3.Lerp(CurveToDraw.pointsBeforeAnchors.transform.position, CurveToDraw.pointsAnchors.transform.position, time), time);
@@ -242,36 +241,74 @@ public class PositionCurve : MonoBehaviour
     }
 
     //Permet d'afficher la courbe
-    void DrawNewSegment()
+    void DrawNewSegment(bool previsualisation)
     {
-        GameObject holderSegmentRoad = Instantiate(anchor, Vector3.zero, Quaternion.identity, roadHolder.transform);
+        GameObject holderSegmentRoad = Instantiate(anchor, Vector3.zero, new Quaternion(0, 0, 0, 0), roadHolder.transform);
+        holderSegmentRoad.name = "HolderRoadSegment(" + roadHolder.transform.childCount + ")";
         //Only Working for last segment
+        Transform lastValidTransform = null;
+        if (roadHolder.transform.childCount > 1)
+        {
+            Transform lastRoad = roadHolder.transform.GetChild(roadHolder.transform.childCount - 2);
+            int lastChild = (int)smoothness - 1;
+            if (lastRoad != null && lastRoad.childCount > lastChild)
+            {
+                lastValidTransform = lastRoad.GetChild(lastChild);
+            }
+        }
+        
         for (float i = 0; i < smoothness; i++)
         {
-            holderSegmentRoad.name = "HolderRoadSegment(" + roadHolder.transform.childCount + ")";
             if (curveTab.Count != 1)
             {
-                GameObject roadJustCreated = Instantiate(physicalRoad, GetPoint(curveTab[curveTab.Count - 1], curveTab[curveTab.Count - 2],(i / (float)smoothness)), Quaternion.identity, holderSegmentRoad.transform);
-            
-                if (bufferRoad == null)
+                GameObject roadJustCreated = Instantiate(physicalRoad, GetPoint(curveTab[curveTab.Count - 1], curveTab[curveTab.Count - 2], (i / (float)smoothness)), new Quaternion (0,0,0,0), holderSegmentRoad.transform);
+                roadJustCreated.name = "PartOfRoad: " + i;
+                if (bufferRoad == null) 
                 {
                     bufferRoad = roadJustCreated;
                 }
                 else
                 {
-                   bufferRoad.transform.rotation = Quaternion.LookRotation(bufferRoad.transform.position - roadJustCreated.transform.position);
-                   bufferRoad.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y, (i / smoothness) * rotationValue + rotationOfTheLastRoadPart);
-                   if (i == smoothness - 1)
+
+                    Vector3 direction = (roadJustCreated.transform.position - bufferRoad.transform.position).normalized;
+                     Quaternion quatCible = Quaternion.FromToRotation(bufferRoad.transform.forward, direction) * bufferRoad.transform.rotation;
+                     bufferRoad.transform.rotation = quatCible;
+
+                     
+                    //Vector3 up = Vector3.Slerp(roadHolder.transform.GetChild(roadHolder.transform.childCount - 1).GetChild(0).transform.up, Instanciator.transform.up, (i / (float)smoothness));
+                    //Vector3 up = Vector3.up;
+                    //Vector3 fwd = roadJustCreated.transform.position - bufferRoad.transform.position;
+                    
+                    //bufferRoad.transform.localRotation = Quaternion.LookRotation(fwd, up);
+                    //Debug.LogFormat("road {0} fwd fed:{1}  fwd tr:{2} up:{3}", i, fwd, bufferRoad.transform.forward, bufferRoad.transform.up);
+                    /*bufferRoad.transform.LookAt(roadJustCreated.transform);
+                    if(lastValidTransform != null)
                     {
-                        roadJustCreated.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y,
-                                                                  bufferRoad.transform.rotation.eulerAngles.z + (1/smoothness) * rotationOfTheLastRoadPart);
+                        Debug.LogFormat("testing alignment of {0} and {1}", bufferRoad.transform.parent.name + ">" + bufferRoad.name, lastValidTransform.parent.name + ">" + lastValidTransform.name);
+                        float alignment = Vector3.Dot(bufferRoad.transform.up, lastValidTransform.up);
+                        if(alignment<0)
+                        {
+                            Debug.LogFormat("{0} and {1} had opposite up vectors", bufferRoad.transform.parent.name + ">" + bufferRoad.name, lastValidTransform.parent.name + ">" + lastValidTransform.name);
+                            bufferRoad.transform.Rotate(0, 0, 180);
+                        }
+                    }*/
+                    //lastValidTransform = bufferRoad.transform;
+
+                    //bufferRoad.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y, (i / smoothness) * rotationValue + rotationOfTheLastRoadPart);
+                    if (i == smoothness - 1)
+                    {
+                        /*roadJustCreated.transform.localRotation = Quaternion.Euler(bufferRoad.transform.rotation.eulerAngles.x, bufferRoad.transform.rotation.eulerAngles.y,
+                                                                  bufferRoad.transform.rotation.eulerAngles.z + (1/smoothness) * rotationOfTheLastRoadPart);*/
+                        roadJustCreated.transform.localRotation = bufferRoad.transform.localRotation;
                     }
                     bufferRoad = roadJustCreated;
                 }
                 positions.Add(roadJustCreated.transform.position);
             }
-                
+
         }
+        if (previsualisation == false)
+            rotationOfTheLastRoadPart += rotationValue;
     }
 
     IEnumerator DrawNewSegment(float duration)
@@ -302,6 +339,6 @@ public class PositionCurve : MonoBehaviour
                 yield return null;
             }
         }
-        
+
     }
 }

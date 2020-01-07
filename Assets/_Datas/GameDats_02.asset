@@ -17,6 +17,7 @@ MonoBehaviour:
   spheresMinRadius: 150
   spheresMaxRadius: 150
   distanceInit: 30
+  MaxRotationZ: 90
   objects:
   - {fileID: 100000, guid: 3f4d2118f6a772542a1635ef5bfa6982, type: 3}
   - {fileID: 100002, guid: 3f4d2118f6a772542a1635ef5bfa6982, type: 3}
