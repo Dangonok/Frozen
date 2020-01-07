@@ -29,7 +29,7 @@ public class CreatePoints : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any))
+        if (Input.GetKeyDown(KeyCode.A) || triggerAction.GetStateDown(SteamVR_Input_Sources.Any) || Input.GetKeyDown(KeyCode.Mouse0) && CanCreate())
         {
             m_pathCreator.bezierPath.SetAnchorNormalAngle(m_pathCreator.bezierPath.NumSegments, m_handTransform.localEulerAngles.z);
             m_pathCreator.bezierPath.AddSegmentToEnd(GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand));
@@ -39,11 +39,31 @@ public class CreatePoints : MonoBehaviour
       //  m_target.position = GetInstanceDotPositionRay(m_handTransform, m_playerTransform);
         m_target.position = GetInstanceDotPosition(m_handTransform, m_playerTransform, m_parentHand);
 
+        if (CanCreate())
+        {
+            m_target.gameObject.SetActive(true);
+            m_line.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_target.gameObject.SetActive(false);
+            m_line.gameObject.SetActive(false);
+        }
+
         if (GameManager.Instance.datas.previsualisation == true)
             MoveLastSegment();
         SetLine();
     }
 
+    private bool CanCreate()
+    {
+        bool canCreate = false;
+        //bloque la génération à 4 secondes de gameplay
+        if(Vector3.Distance(m_playerTransform.position, m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1)) < 45)
+            canCreate = true;
+        
+        return canCreate;
+    }
 
     public void MoveLastSegment()
     {
@@ -66,14 +86,13 @@ public class CreatePoints : MonoBehaviour
         m_lastPathGoTemp.transform.localPosition = Vector3.zero;
         m_lastPathGoTemp.transform.localRotation = handTransform.localRotation;
 
-
         //sortir le game object tempon
         if (m_lastPathGoTemp.transform.parent != null)
             m_lastPathGoTemp.transform.parent = null;
         Vector3 finalDotPosition = m_pathCreator.bezierPath.GetPoint(m_pathCreator.bezierPath.NumPoints - 1);
 
-        Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * GameManager.Instance.datas.distanceInit + finalDotPosition;
-        //print(newDotPosition);
+        //Vector3 newDotPosition = m_lastPathGoTemp.transform.forward * GameManager.Instance.datas.distanceInit + finalDotPosition;
+        Vector3 newDotPosition = GetInstanceDotPositionRay(handTransform, playerTransform);
         return newDotPosition;
     }
 
