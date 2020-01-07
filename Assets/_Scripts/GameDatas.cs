@@ -10,5 +10,7 @@ public class GameDatas : ScriptableObject
     public int spheresMinRadius;
     public int spheresMaxRadius;
     public int distanceInit;
+
+    public int MaxRotationZ;
     public GameObject[] objects;
 }
