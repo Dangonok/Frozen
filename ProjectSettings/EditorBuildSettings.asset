@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scene/LightSpell.unity
+    guid: 5bda813acbced814583a30edea08cfc5
   m_configObjects: {}
