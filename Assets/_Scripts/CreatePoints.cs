@@ -20,6 +20,7 @@ public class CreatePoints : MonoBehaviour
     
     [SerializeField] GameObject m_lastPathGoTemp;
     [SerializeField] LineRenderer m_line;
+
     private void Start()
     {
         m_target.position = m_handTransform.position + m_handTransform.forward * m_distanceFocus;

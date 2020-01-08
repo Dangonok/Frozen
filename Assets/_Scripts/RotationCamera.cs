@@ -22,6 +22,5 @@ public class RotationCamera : MonoBehaviour
     {
         if(axis == Axis.Y) transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_sensitive, 0);
         else transform.Rotate(- Input.GetAxis("Mouse Y") * Time.deltaTime * m_sensitive, 0, 0);
-        print(Input.GetAxis("Vertical"));
     }
 }

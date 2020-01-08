@@ -170,6 +170,7 @@ namespace Dreamteck.Splines
             double p = startPercent + (_direction == Spline.Direction.Forward ? percent : -percent);
             bool callOnEndReached = false, callOnBeginningReached = false;
             lastClippedPercent = p;
+
             if(_direction == Spline.Direction.Forward && p >= 1.0)
             {
                 if (onEndReached != null && startPercent < 1.0) callOnEndReached = true;
